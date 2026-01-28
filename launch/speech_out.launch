@@ -1,0 +1,63 @@
+<launch>
+  <!-- =========================
+       TEXT INPUT (POI) - Platzhalter
+       ========================= -->
+  <arg name="poi_text_topic" default="/poi/TODO_info_text" />
+
+  <!-- =========================
+       MOVEMENT INTERFACE
+       ========================= -->
+  <arg name="nav_status_topic"  default="/navbot/nav_status" />
+  <arg name="speech_done_topic" default="/navbot/speech_done" />
+
+  <!-- =========================
+       HANDSHAKE / DEBUG
+       ========================= -->
+  <arg name="is_speaking_topic" default="/speech_out/is_speaking" />
+
+  <!-- =========================
+       AUDIO / TTS CONFIG
+       ========================= -->
+  <arg name="piper_path" default="/home/ubuntu/speech_out/piper/piper" />
+  <arg name="model_path" default="/home/ubuntu/speech_out/piper_voices/en_ryan.onnx" />
+  <arg name="sox_path"   default="/usr/bin/sox" />
+  <arg name="aplay_path" default="/usr/bin/aplay" />
+  <arg name="device"     default="plughw:2,0" />
+  <arg name="music_file" default="/home/ubuntu/music/musik/musik1_48k.wav" />
+
+  <!-- =========================
+       CACHE CONFIG (MD5 -> WAV)
+       ========================= -->
+  <arg name="enable_cache" default="true" />
+  <arg name="cache_dir"    default="/home/ubuntu/speech_out/cache_wav" />
+
+  <!-- =========================
+       NODE START
+       ========================= -->
+  <node pkg="speech_out" type="speech_integration_node.py" name="speech_out" output="screen">
+
+    <!-- Text Input: wird später auf echten POI-Topic gesetzt -->
+    <param name="text_topic" value="/speech_out/say" />
+
+    <!-- Movement -->
+    <param name="nav_status_topic"  value="$(arg nav_status_topic)" />
+    <param name="speech_done_topic" value="$(arg speech_done_topic)" />
+
+    <!-- is_speaking -->
+    <param name="is_speaking_topic" value="$(arg is_speaking_topic)" />
+
+    <!-- Audio / Piper -->
+    <param name="piper_path" value="$(arg piper_path)" />
+    <param name="model_path" value="$(arg model_path)" />
+    <param name="sox_path"   value="$(arg sox_path)" />
+    <param name="aplay_path" value="$(arg aplay_path)" />
+    <param name="device"     value="$(arg device)" />
+    <param name="music_file" value="$(arg music_file)" />
+
+    <!-- Cache -->
+    <param name="enable_cache" value="$(arg enable_cache)" />
+    <param name="cache_dir"    value="$(arg cache_dir)" />
+
+  </node>
+</launch>
+
